@@ -1,7 +1,7 @@
 import requests
 from requests import Response
 
-from ..models.login_credentials_model import login_credentials_model
+from ..models.login_credentials_model import LoginCredentialsModel
 from requests import session
 
 
@@ -12,7 +12,7 @@ class LoginApi:
         self.session = session()
         self.session.headers = headers
 
-    def post_account_login(self, json: login_credentials_model, **kwargs) -> Response:
+    def post_account_login(self, json: LoginCredentialsModel, **kwargs) -> Response:
         """
         :param json login_credentials_model
         Authentificate via credentials
