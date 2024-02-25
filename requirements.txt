@@ -3,3 +3,4 @@ pytest
 structlog~=24.1.0
 curlify~=2.2.1
 pydantic~=2.6.1
+pyhamcrest
