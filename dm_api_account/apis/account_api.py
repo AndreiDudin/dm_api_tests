@@ -2,8 +2,8 @@ import requests
 from requests import Response
 
 from restclient.restclient import RestClient
-from ..models import *
-from ..utilities import validate_request_json, validate_status_code
+from dm_api_account.models import *
+from dm_api_account.utilities import validate_request_json, validate_status_code
 
 
 class AccountApi:

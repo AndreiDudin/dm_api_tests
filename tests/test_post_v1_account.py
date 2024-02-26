@@ -26,7 +26,7 @@ def test_post_v1_account():
         password="adudin53"
     )
 
-    response = api.account.post_v1_account(json=json)
-    # time.sleep(5)
-    # token = mailhog.get_token_from_last_email()
-    # assert api.account.put_v1_account_token(token=token).status_code == 200
+    api.account.post_v1_account(json=json)
+    time.sleep(5)
+    token = mailhog.get_token_from_last_email()
+    api.account.put_v1_account_token(token=token)

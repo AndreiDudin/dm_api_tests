@@ -31,10 +31,16 @@ def test_put_v1_account_token():
     api.account.post_v1_account(json=json_registration)
     time.sleep(5)
     token = mailhog.get_token_from_last_email()
-    response = api.account.put_v1_account_token(token=token, status_code=200)
-    print(response.resource.rating.enabled) #можно ли таким способом получить значение поля enabled для дальнейшей проверки в строке 39?
+    response = api.account.put_v1_account_token(
+        token=token,
+        status_code=200
+    )
     assert_that(response.resource, has_properties(
         {"login": "adudin58",
          "roles": [UserRole.guest, UserRole.player],
-         "rating": Rating(enabled=True, quality=0, quantity=0)}
+         "rating": Rating(
+             enabled=True,
+             quality=0,
+             quantity=0)
+         }
     ))

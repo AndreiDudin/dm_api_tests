@@ -14,7 +14,12 @@ class LoginApi:
         if headers:
             self.client.session.headers.update(headers)
 
-    def post_account_login(self, json: LoginCredentials, status_code: int = 200, **kwargs) -> Response | UserEnvelope:
+    def post_account_login(
+            self,
+            json: LoginCredentials,
+            status_code: int = 200,
+            **kwargs
+    ) -> Response | UserEnvelope:
         """
         :param status_code:
         :param json login_credentials_model
@@ -31,7 +36,11 @@ class LoginApi:
             return UserEnvelope(**response.json())
         return response
 
-    def delete_account_login(self, **kwargs) -> Response:
+    def delete_account_login(
+            self,
+            status_code: int = 200,
+            **kwargs
+    ) -> Response | GeneralError:
         """
         Logout as current user
         :return:
@@ -40,9 +49,15 @@ class LoginApi:
             path="/v1/account/login",
             **kwargs
         )
+        if response.status_code == status_code:
+            return GeneralError(**response.json())
         return response
 
-    def delete_account_login_all(self, **kwargs) -> Response:
+    def delete_account_login_all(
+            self,
+            status_code: int = 204,
+            **kwargs
+    ) -> Response | GeneralError:
         """
         Logout from every device
         :return:
@@ -51,4 +66,6 @@ class LoginApi:
             path="/v1/account/login/all",
             **kwargs
         )
+        if response.status_code == status_code:
+            return GeneralError(**response.json())
         return response
