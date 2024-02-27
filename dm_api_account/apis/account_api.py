@@ -39,7 +39,7 @@ class AccountApi:
             json: ResetPassword,
             status_code: int = 201,
             **kwargs
-    ) -> Response | UserEnvelope:
+    ) -> Response | UserEnvelope | BadRequestError:
         """
         :param status_code:
         :param json ResetPasswordModel
@@ -57,8 +57,7 @@ class AccountApi:
         elif response.status_code == 200:
             return response
         else:
-            assert response.status_code == response.status_code, \
-                f"Фактический {response.status_code}"
+            return BadRequestError(**response.json())
 
     def put_v1_account_email(
             self,
