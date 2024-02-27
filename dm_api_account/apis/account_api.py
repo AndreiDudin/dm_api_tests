@@ -37,7 +37,7 @@ class AccountApi:
     def post_v1_account_password(
             self,
             json: ResetPassword,
-            status_code: int = 201,
+            status_code: int = 200,
             **kwargs
     ) -> Response | UserEnvelope | BadRequestError:
         """
@@ -54,7 +54,7 @@ class AccountApi:
         validate_status_code(response, status_code)
         if response.status_code == status_code:
             return UserEnvelope(**response.json())
-        elif response.status_code == 200:
+        elif response.status_code == 201:
             return response
         else:
             return BadRequestError(**response.json())
