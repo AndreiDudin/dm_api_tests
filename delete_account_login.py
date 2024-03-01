@@ -1,5 +1,6 @@
 import requests
 
+
 def delete_account_login():
     """
     Logout as current user
