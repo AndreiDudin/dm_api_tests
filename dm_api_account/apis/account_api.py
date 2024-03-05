@@ -14,6 +14,9 @@ class AccountApi:
         if headers:
             self.client.session.headers.update(headers)
 
+    def set_headers(self):
+        self.facade.account_api.client
+
     def post_v1_account(
             self,
             json: Registration,
@@ -39,7 +42,7 @@ class AccountApi:
             json: ResetPassword,
             status_code: int = 200,
             **kwargs
-    ) -> Response | UserEnvelope | BadRequestError:
+    ) -> Response | UserEnvelope:
         """
         :param status_code:
         :param json ResetPasswordModel
@@ -52,12 +55,12 @@ class AccountApi:
             **kwargs
         )
         validate_status_code(response, status_code)
-        if response.status_code == status_code:
-            return UserEnvelope(**response.json())
-        elif response.status_code == 201:
-            return response
+        # if response.status_code == status_code:
+        #     return response
+        if response.status_code == 201:
+            UserEnvelope(**response.json())
         else:
-            return BadRequestError(**response.json())
+            return response
 
     def put_v1_account_email(
             self,
@@ -84,7 +87,7 @@ class AccountApi:
     def put_v1_account_password(
             self,
             json: ChangePassword,
-            status_code: int,
+            status_code: int = 200,
             **kwargs
     ) -> Response | UserEnvelope:
         """
@@ -99,7 +102,7 @@ class AccountApi:
             **kwargs
         )
         validate_status_code(response, status_code)
-        if response.status_code == status_code:
+        if response.status_code == 200:
             return UserEnvelope(**response.json())
         return response
 
@@ -122,16 +125,20 @@ class AccountApi:
             return UserEnvelope(**response.json())
         return response
 
-    def get_v1_account(self, status_code: int = 200, **kwargs) -> Response | UserDetailsEnvelope:
+    def get_v1_account(
+            self,
+            status_code: int = 200,
+            **kwargs
+    ) -> Response | UserDetailsEnvelope:
         """
         Get current user
         :return:
         """
-        response = requests.get(
+        response = self.client.get(
             path=f"/v1/account",
             **kwargs
         )
         validate_status_code(response, status_code)
-        if response.status_code == status_code:
+        if response.status_code == 200:
             return UserDetailsEnvelope(**response.json())
         return response
