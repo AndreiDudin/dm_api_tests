@@ -75,5 +75,5 @@ class Account:
             ),
             status_code=status_code,
             **kwargs
-        ),
+        )
         return response
