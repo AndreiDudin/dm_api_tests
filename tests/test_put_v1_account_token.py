@@ -5,8 +5,8 @@ from hamcrest import assert_that, has_properties
 
 from dm_api_account.models.registration_model import Registration
 from dm_api_account.models.user_envelope_model import UserRole, Rating
-from services.dm_api_account import DmApiAccount
-from services.mailhog import MailhogApi
+from services.dm_api_account import Facade
+from generic.helpers.mailhog import MailhogApi
 
 structlog.configure(
     processors=[
@@ -21,22 +21,22 @@ def test_put_v1_account_token():
     :return:
     """
     mailhog = MailhogApi(host="http://5.63.153.31:5025")
-    api = DmApiAccount(host="http://5.63.153.31:5051")
+    api = Facade(host="http://5.63.153.31:5051")
     json_registration = Registration(
-        login="adudin58",
-        email="adudin58@mail.ru",
-        password="adudin58"
+        login="adudin96",
+        email="adudin96@mail.ru",
+        password="adudin96"
     )
 
-    api.account.post_v1_account(json=json_registration)
+    api.account_api.post_v1_account(json=json_registration)
     time.sleep(5)
     token = mailhog.get_token_from_last_email()
-    response = api.account.put_v1_account_token(
+    response = api.account_api.put_v1_account_token(
         token=token,
         status_code=200
     )
     assert_that(response.resource, has_properties(
-        {"login": "adudin58",
+        {"login": "adudin96",
          "roles": [UserRole.guest, UserRole.player],
          "rating": Rating(
              enabled=True,

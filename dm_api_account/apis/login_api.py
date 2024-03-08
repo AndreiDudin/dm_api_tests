@@ -33,12 +33,12 @@ class LoginApi:
         )
         validate_status_code(response, status_code)
         if response.status_code == 200:
-            return UserEnvelope(**response.json())
+            UserEnvelope(**response.json())
         return response
 
     def delete_account_login(
             self,
-            status_code: int = 200,
+            status_code: int = 204,
             **kwargs
     ) -> Response | GeneralError:
         """
@@ -49,8 +49,10 @@ class LoginApi:
             path="/v1/account/login",
             **kwargs
         )
-        if response.status_code == status_code:
-            return GeneralError(**response.json())
+        validate_status_code(response, status_code)
+#         if response.status_code == status_code:
+#             assert response.status_code == status_code
+# #            return GeneralError(**response.json())
         return response
 
     def delete_account_login_all(
@@ -66,6 +68,7 @@ class LoginApi:
             path="/v1/account/login/all",
             **kwargs
         )
-        if response.status_code == status_code:
-            return GeneralError(**response.json())
+        validate_status_code(response, status_code)
+        # if response.status_code == status_code:
+        #     return GeneralError(**response.json())
         return response
