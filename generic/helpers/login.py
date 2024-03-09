@@ -12,14 +12,16 @@ class Login:
             self,
             login: str,
             password: str,
-            remember_me: bool = True
+            remember_me: bool = True,
+            status_code: int = 200
     ):
         response = self.facade.login_api.post_account_login(
             json=LoginCredentials(
                 login=login,
                 password=password,
                 rememberMe=remember_me
-            )
+            ),
+            status_code=status_code
         )
         return response
 

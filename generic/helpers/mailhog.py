@@ -79,4 +79,6 @@ class MailhogApi:
         print('Попытка получить письмо')
         return self.get_token_by_login(login=login, attempt=attempt - 1)
 
-
+    def delete_all_messages(self):
+        response = self.client.delete(path='/api/v1/messages')
+        return response
