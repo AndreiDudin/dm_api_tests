@@ -1,3 +1,5 @@
+import time
+
 from dm_api_account.models import LoginCredentials
 
 
@@ -36,7 +38,8 @@ class Login:
             password=password,
             remember_me=remember_me
         )
-        print(f"response= {response.headers}")
+        time.sleep(5)
+        print(response.headers)
         token = {'X-Dm-Auth-Token': response.headers['X-Dm-Auth-Token']}
         return token
 
