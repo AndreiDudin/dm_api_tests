@@ -1,39 +1,76 @@
-import time
-
-import structlog
-
-from dm_api_account.models.registration_model import Registration
-from dm_api_account.models.change_email_model import ChangeEmail
-from services.dm_api_account import Facade
-from generic.helpers.mailhog import MailhogApi
-
-structlog.configure(
-    processors=[
-        structlog.processors.JSONRenderer(indent=4, sort_keys=True, ensure_ascii=False)
-    ]
-)
+from hamcrest import assert_that, has_entries, has_properties
+from dm_api_account.models.user_envelope_model import UserRole, Rating
 
 
-def test_put_v1_account_email():
+def test_put_v1_account_email(dm_api_facade, dm_db, prepare_user):
     """
     тест создает, активирует пользователя и меняет email
     :return:
     """
-    mailhog = MailhogApi(host="http://5.63.153.31:5025")
-    api = Facade(host="http://5.63.153.31:5051")
-    json_create = Registration(
-        login="adudin43",
-        email="adudin43@mail.ru",
-        password="adudin43"
-    )
+    login = prepare_user.login
+    user_password = prepare_user.user_password
+    email = prepare_user.email
+    new_email = prepare_user.new_email
 
-    json_change_email = ChangeEmail(
-        login="adudin43",
-        password="adudin43",
-        email="adudin43_new@mail.ru"
+    dm_api_facade.account.register_new_user(
+        login=login,
+        email=email,
+        password=user_password
     )
-    api.account_api.post_v1_account(json=json_create)
-    time.sleep(5)
-    token = mailhog.get_token_from_last_email()
-    api.account_api.put_v1_account_token(token=token)
-    api.account_api.put_v1_account_email(json=json_change_email)
+    dataset = dm_db.get_user_by_login(login=login)
+    for row in dataset:
+        assert_that(row, has_entries(
+            {
+                'Login': login,
+                'Activated': False
+            }
+        ))
+
+    # Активация нового пользователя
+    dm_db.update_activated_status(
+        login=login,
+        activated_status=True
+    )
+    dataset = dm_db.get_user_by_login(login=login)
+    for row in dataset:
+        assert_that(row, has_entries(
+            {
+                'Login': login,
+                'Activated': True
+            }
+        ))
+
+    token = dm_api_facade.login.get_auth_token(
+        login=login,
+        password=user_password
+    )
+    dm_api_facade.account.set_headers(headers=token)
+    response = dm_api_facade.account.change_registered_user_email(
+        login=login,
+        password=user_password,
+        email=new_email
+    )
+    dataset = dm_db.get_user_by_login(login=login)
+    for row in dataset:
+        assert_that(row, has_entries(
+            {
+                'Email': new_email
+            }
+        ))
+
+    assert_that(
+        response.resource, has_properties(
+            {
+                "login": login,
+                "roles": [
+                    UserRole.guest,
+                    UserRole.player
+                ],
+                "rating": Rating(
+                    enabled=True,
+                    quality=0,
+                    quantity=0
+                )
+            }
+        )
+    )
