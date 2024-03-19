@@ -1,7 +1,10 @@
+import allure
 import pytest
 import structlog
 from vyper import v
 from pathlib import Path
+
+from generic.assertions.post_v1_account import AssertionsPostV1Account
 from generic.helpers.mailhog import MailhogApi
 from generic.helpers.orm_db import OrmDatabase
 from services.dm_api_account import Facade
@@ -37,23 +40,32 @@ options = (
     'database.dm3_5.host'
 )
 
+connect = None
 
-@pytest.fixture()
+@pytest.fixture
 def dm_db():
     # user = 'postgres'
     # password = 'admin'
     # host = '5.63.153.31'
     # database = 'dm3.5'
+    global connect
+    if connect is None:
+        connect = OrmDatabase(
+            user=v.get('database.dm3_5.user'),
+            password=v.get('database.dm3_5.password'),
+            host=v.get('database.dm3_5.host'),
+            database=v.get('database.dm3_5.database')
+        )
+    yield connect
+    connect.db.db.close()
 
-    orm = OrmDatabase(
-        user=v.get('database.dm3_5.user'),
-        password=v.get('database.dm3_5.password'),
-        host=v.get('database.dm3_5.host'),
-        database=v.get('database.dm3_5.database')
-    )
-    return orm
+
+@pytest.fixture
+def assertions(dm_db):
+    return AssertionsPostV1Account(dm_db)
 
 
+@allure.step("Подготовка тестового пользователя")
 @pytest.fixture
 def prepare_user(dm_api_facade, dm_db):
     login = "adudin123"

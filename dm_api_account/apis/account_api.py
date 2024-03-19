@@ -1,3 +1,4 @@
+import allure
 import requests
 from requests import Response
 
@@ -17,6 +18,7 @@ class AccountApi:
     def set_headers(self):
         self.facade.account_api.client
 
+
     def post_v1_account(
             self,
             json: Registration,
@@ -29,11 +31,13 @@ class AccountApi:
         Register new user
         :return:
         """
-        response = self.client.post(
-            path=f"/v1/account",
-            json=validate_request_json(json),
-            **kwargs
-        )
+        with allure.step("Регистрация нового пользователя"):
+            response = self.client.post(
+                path=f"/v1/account",
+                json=validate_request_json(json),
+                **kwargs
+            )
+
         validate_status_code(response, status_code)
         return response
 
@@ -116,10 +120,11 @@ class AccountApi:
         Activate register user
         :return:
         """
-        response = self.client.put(
-            path=f"/v1/account/{token}",
-            **kwargs
-        )
+        with allure.step("Активация пользователя"):
+            response = self.client.put(
+                path=f"/v1/account/{token}",
+                **kwargs
+            )
         validate_status_code(response, status_code)
         if response.status_code == status_code:
             return UserEnvelope(**response.json())

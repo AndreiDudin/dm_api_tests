@@ -1,5 +1,6 @@
 from typing import List
 
+import allure
 from sqlalchemy import select, delete, update
 from generic.helpers.orm_models import User
 from orm_client.orm_client import OrmClient
@@ -25,6 +26,7 @@ class OrmDatabase:
         return dataset
 
     def update_activated_status(self, login: str, activated_status: bool):
-        query = update(User).where(User.Login == login).values(Activated=activated_status)
-        dataset = self.db.send_bulk_query(query=query)
-        return dataset
+        with allure.step("Активация пользователя таблицу через базы данных"):
+            query = update(User).where(User.Login == login).values(Activated=activated_status)
+            dataset = self.db.send_bulk_query(query=query)
+            return dataset
