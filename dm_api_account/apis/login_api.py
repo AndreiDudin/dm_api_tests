@@ -27,7 +27,7 @@ class LoginApi:
         Authentificate via credentials
         :return:
         """
-        with allure.step("Авторизация пользователя"):
+        with allure.step("Authenticate via credentials"):
             response = self.client.post(
                 path="/v1/account/login",
                 json=validate_request_json(json),
@@ -47,10 +47,11 @@ class LoginApi:
         Logout as current user
         :return:
         """
-        response = self.client.delete(
-            path="/v1/account/login",
-            **kwargs
-        )
+        with allure.step("Logout as current user"):
+            response = self.client.delete(
+                path="/v1/account/login",
+                **kwargs
+            )
         validate_status_code(response, status_code)
 #         if response.status_code == status_code:
 #             assert response.status_code == status_code
@@ -66,10 +67,11 @@ class LoginApi:
         Logout from every device
         :return:
         """
-        response = self.client.delete(
-            path="/v1/account/login/all",
-            **kwargs
-        )
+        with allure.step("Logout from every device"):
+            response = self.client.delete(
+                path="/v1/account/login/all",
+                **kwargs
+            )
         validate_status_code(response, status_code)
         # if response.status_code == status_code:
         #     return GeneralError(**response.json())

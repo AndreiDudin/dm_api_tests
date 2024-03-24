@@ -90,7 +90,6 @@ class RestClient:
             name='curl',
             attachment_type=allure.attachment_type.JSON
         )
-        print(curl)
         log.msg(
             event='response',
             status_code=response.status_code,

@@ -57,7 +57,7 @@ def dm_db():
             database=v.get('database.dm3_5.database')
         )
     yield connect
-    connect.db.db.close()
+    #connect.db.db.close()
 
 
 @pytest.fixture

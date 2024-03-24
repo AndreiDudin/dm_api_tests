@@ -1,13 +1,9 @@
 import allure
-import pytest
-from hamcrest import assert_that, has_properties, has_entries
+from hamcrest import assert_that, has_properties
 from dm_api_account.models.user_envelope_model import UserRole, Rating
-from collections import namedtuple
-
-from generic import assertions
 
 
-@allure.suite("Тесты на проверку метода POST{host}/v1/account/password")
+@allure.suite("Тесты на проверку метода POST{host}/v1/account")
 @allure.sub_suite("Позитивные проверки")
 class TestsPostV1Account:
     @allure.title("Проверка регистрации и активации пользователя")
@@ -24,22 +20,22 @@ class TestsPostV1Account:
         user_password = prepare_user.user_password
         email = prepare_user.email
         dm_api_facade.account.register_new_user(
-                login=login,
-                email=email,
-                password=user_password
-            )
+            login=login,
+            email=email,
+            password=user_password
+        )
 
         assertions.check_user_was_created(login=login)
         dm_db.update_activated_status(
-                login=login,
-                activated_status=True
-            )
+            login=login,
+            activated_status=True
+        )
 
         assertions.check_user_was_activated(login=login)
         response = dm_api_facade.login.login_user(
-                login=login,
-                password=user_password
-            )
+            login=login,
+            password=user_password
+        )
         assert_that(
             response.resource, has_properties(
                 {

@@ -13,7 +13,7 @@ def validate_request_json(json: str | BaseModel):
 
 
 def validate_status_code(response: requests.Response, status_code: int):
-    with allure.step("Проверка валидации и статус кода"):
+    with allure.step(f"Проверка, что в ответе status code = {status_code}"):
         assert response.status_code == status_code, f"Ожидаем код ответа 201, но он равен {response.status_code}"
 
 
