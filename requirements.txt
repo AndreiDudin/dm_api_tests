@@ -3,4 +3,5 @@ structlog~=24.1.0
 curlify~=2.2.1
 pydantic~=2.6.1
 records~=0.5.3
-sqlalchemy
+sqlalchemy~=1.4.46
+pytest~=8.0.2
