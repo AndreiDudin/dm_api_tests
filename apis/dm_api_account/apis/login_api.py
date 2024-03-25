@@ -1,10 +1,8 @@
 import allure
-import requests
 from requests import Response
-
-from restclient.restclient import RestClient
-from ..models import *
-from dm_api_account.utilities import validate_request_json, validate_status_code
+from apis.dm_api_account.models import *
+from common_libs.restclient.restclient import RestClient
+from apis.dm_api_account.utilities import validate_request_json, validate_status_code
 
 
 class LoginApi:
@@ -19,6 +17,7 @@ class LoginApi:
             self,
             json: LoginCredentials,
             status_code: int = 200,
+            request_token: bool = True,
             **kwargs
     ) -> Response | UserEnvelope:
         """
@@ -35,8 +34,11 @@ class LoginApi:
             )
         validate_status_code(response, status_code)
         if response.status_code == 200:
+            UserEnvelope(**response.json())
+        if request_token is True:
+            return response
+        else:
             return UserEnvelope(**response.json())
-        return response
 
     def delete_account_login(
             self,

@@ -4,7 +4,7 @@ from typing import Optional, Any, List
 
 from pydantic import BaseModel, Extra, Field, StrictStr
 
-from dm_api_account.models.user_envelope_model import UserRole, Rating
+from apis.dm_api_account.models.user_envelope_model import UserRole, Rating
 
 
 class BbParseMode(Enum):

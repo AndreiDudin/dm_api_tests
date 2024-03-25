@@ -1,6 +1,6 @@
 import time
 
-from dm_api_account.models import LoginCredentials
+from apis.dm_api_account.models import LoginCredentials
 
 
 class Login:
@@ -15,7 +15,8 @@ class Login:
             login: str,
             password: str,
             remember_me: bool = True,
-            status_code: int = 200
+            status_code: int = 200,
+            request_token: bool = True
     ):
         response = self.facade.login_api.post_account_login(
             json=LoginCredentials(
@@ -23,7 +24,8 @@ class Login:
                 password=password,
                 rememberMe=remember_me
             ),
-            status_code=status_code
+            status_code=status_code,
+            request_token=request_token
         )
         return response
 

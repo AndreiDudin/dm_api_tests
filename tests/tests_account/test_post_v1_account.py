@@ -1,6 +1,7 @@
 import allure
 from hamcrest import assert_that, has_properties
-from dm_api_account.models.user_envelope_model import UserRole, Rating
+from apis.dm_api_account.models.user_envelope_model import UserRole, Rating
+from data.post_v1_account import PostV1AccountData as user_data
 
 
 @allure.suite("Тесты на проверку метода POST{host}/v1/account")
@@ -16,9 +17,9 @@ class TestsPostV1Account:
         :param assertions:
         :return:
         """
-        login = prepare_user.login
-        user_password = prepare_user.user_password
-        email = prepare_user.email
+        login = user_data.login
+        user_password = user_data.password
+        email = user_data.email
         dm_api_facade.account.register_new_user(
             login=login,
             email=email,
@@ -30,11 +31,11 @@ class TestsPostV1Account:
             login=login,
             activated_status=True
         )
-
         assertions.check_user_was_activated(login=login)
         response = dm_api_facade.login.login_user(
             login=login,
-            password=user_password
+            password=user_password,
+            request_token=False
         )
         assert_that(
             response.resource, has_properties(

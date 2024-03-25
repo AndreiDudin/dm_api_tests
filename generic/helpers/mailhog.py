@@ -4,7 +4,7 @@ import time
 import allure
 from requests import Response
 
-from restclient.restclient import RestClient
+from common_libs.restclient.restclient import RestClient
 
 
 def decorator(fn):

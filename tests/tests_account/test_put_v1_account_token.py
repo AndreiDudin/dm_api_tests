@@ -1,6 +1,6 @@
 from hamcrest import assert_that, has_properties, has_entries
 
-from dm_api_account.models.user_envelope_model import UserRole, Rating
+from apis.dm_api_account.models.user_envelope_model import UserRole, Rating
 
 
 def test_put_v1_account_token(dm_api_facade, dm_db, prepare_user):
