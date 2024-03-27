@@ -1,6 +1,6 @@
-from hamcrest import assert_that, has_properties, has_entries
+from hamcrest import assert_that, has_properties
 from data.post_v1_account import PostV1AccountData as user_data
-from apis.dm_api_account.models.user_envelope_model import UserRole, Rating
+from dm_api_account.models.user_envelope_model import UserRole, Rating
 
 
 def test_get_v1_account(dm_api_facade, dm_db, prepare_user, assertions):

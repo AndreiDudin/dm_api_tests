@@ -5,3 +5,7 @@ pydantic~=2.6.1
 records~=0.5.3
 sqlalchemy~=1.4.46
 pytest~=8.0.2
+git+https://github.com/AndreiDudin/orm_client.git
+git+https://github.com/AndreiDudin/restclient.git
+git+https://github.com/AndreiDudin/dm_api_account.git
+git+https://github.com/AndreiDudin/db_client.git

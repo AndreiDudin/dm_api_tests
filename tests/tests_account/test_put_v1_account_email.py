@@ -1,5 +1,5 @@
 from hamcrest import assert_that, has_entries, has_properties
-from apis.dm_api_account.models.user_envelope_model import UserRole, Rating
+from dm_api_account.models.user_envelope_model import UserRole, Rating
 
 
 def test_put_v1_account_email(dm_api_facade, dm_db, prepare_user):

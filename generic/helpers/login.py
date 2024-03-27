@@ -1,6 +1,6 @@
 import time
 
-from apis.dm_api_account.models import LoginCredentials
+from dm_api_account.models import LoginCredentials
 
 
 class Login:

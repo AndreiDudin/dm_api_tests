@@ -1,6 +1,6 @@
 import allure
 from hamcrest import assert_that, has_properties
-from apis.dm_api_account.models.user_envelope_model import UserRole, Rating
+from dm_api_account.models.user_envelope_model import UserRole, Rating
 from data.post_v1_account import PostV1AccountData as user_data
 
 

@@ -1,4 +1,4 @@
-from apis.dm_api_account.models import Registration, ResetPassword, ChangePassword, ChangeEmail
+from dm_api_account.models import Registration, ResetPassword, ChangePassword, ChangeEmail
 
 try:
     from services.dm_api_account import Facade
