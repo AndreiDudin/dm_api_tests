@@ -1,11 +1,12 @@
 import time
-
+import allure
 from dm_api_account.models import LoginCredentials
 
 
 class Login:
     def __init__(self, facade):
-        self.facade = facade
+        from services.dm_api_account import Facade
+        self.facade: Facade = facade
 
     def set_headers(self, headers):
         self.facade.login_api.client.session.headers.update(headers)
@@ -18,15 +19,14 @@ class Login:
             status_code: int = 200,
             request_token: bool = True
     ):
-        response = self.facade.login_api.post_account_login(
-            json=LoginCredentials(
+        response = self.facade.login_api.v1_account_login_post(
+            login_credentials=LoginCredentials(
                 login=login,
                 password=password,
-                rememberMe=remember_me
-            ),
-            status_code=status_code,
-            request_token=request_token
+                remember_me=remember_me
+            )
         )
+        print(response)
         return response
 
     def get_auth_token(
@@ -41,17 +41,18 @@ class Login:
             remember_me=remember_me
         )
         time.sleep(5)
-        print(response.headers)
-        token = {'X-Dm-Auth-Token': response.headers['X-Dm-Auth-Token']}
+        print(response)
+ #       token = {'X-Dm-Auth-Token': response.headers['X-Dm-Auth-Token']}
+        token = response[2]['X-Dm-Auth-Token']
         return token
 
     def logout_user(self, status_code: int = 204, **kwargs):
-        response = self.facade.login_api.delete_account_login(
+        response = self.facade.login_api.v1_account_login_delete(
             status_code=status_code,
             **kwargs
         )
         return response
 
     def logout_user_from_all_devices(self, **kwargs):
-        response = self.facade.login_api.delete_account_login_all(**kwargs)
+        response = self.facade.login_api.v1_account_login_all_delete(**kwargs)
         return response

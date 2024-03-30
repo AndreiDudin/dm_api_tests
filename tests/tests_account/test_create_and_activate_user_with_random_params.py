@@ -1,7 +1,7 @@
 import allure
 import pytest
 from hamcrest import assert_that, has_entries
-from apis.dm_api_account.utilities import random_string
+from utilities import random_string
 
 
 @allure.suite("Параметрический тест на проверку метода POST{host}/v1/account")

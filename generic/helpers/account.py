@@ -1,14 +1,15 @@
 from dm_api_account.models import Registration, ResetPassword, ChangePassword, ChangeEmail
 
-try:
-    from services.dm_api_account import Facade
-except ImportError:
-    ...
+# try:
+#     from services.dm_api_account import Facade
+# except ImportError:
+#     ...
 
 
 class Account:
     def __init__(self, facade):
-        self.facade = facade
+        from services.dm_api_account import Facade
+        self.facade: Facade = facade
 
     def set_headers(self, headers):
         self.facade.account_api.client.session.headers.update(headers)
@@ -21,22 +22,20 @@ class Account:
             status_code: int = 201,
             **kwargs
     ):
-        response = self.facade.account_api.post_v1_account(
-            json=Registration(
+        response = self.facade.account_api.register(
+            registration=Registration(
                 login=login,
                 email=email,
                 password=password
             ),
-            status_code=status_code,
             **kwargs
         )
         return response
 
     def activate_registered_user(self, login: str):
         token = self.facade.mailhog.get_token_by_login(login=login)
-        response = self.facade.account_api.put_v1_account_token(
-            token=token,
-            status_code=200
+        response = self.facade.account_api.activate(
+            token=token
         )
         return response
 

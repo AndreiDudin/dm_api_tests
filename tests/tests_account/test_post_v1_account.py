@@ -1,6 +1,7 @@
 import allure
 from hamcrest import assert_that, has_properties
-from dm_api_account.models.user_envelope_model import UserRole, Rating
+from dm_api_account.model.rating import Rating
+from dm_api_account.model.user_role import UserRole
 from data.post_v1_account import PostV1AccountData as user_data
 
 
@@ -37,13 +38,14 @@ class TestsPostV1Account:
             password=user_password,
             request_token=False
         )
+#        print(f"response= {response}")
         assert_that(
             response.resource, has_properties(
                 {
                     "login": login,
                     "roles": [
-                        UserRole.guest,
-                        UserRole.player
+                        UserRole('Guest'),
+                        UserRole('Player')
                     ],
                     "rating": Rating(
                         enabled=True,
