@@ -19,7 +19,6 @@ class Account:
             login: str,
             email: str,
             password: str,
-            status_code: int = 201,
             **kwargs
     ):
         response = self.facade.account_api.register(

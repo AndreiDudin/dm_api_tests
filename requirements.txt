@@ -1,43 +1,17 @@
-allure-pytest==2.13.3
-allure-python-commons==2.13.3
-annotated-types==0.6.0
-attrs==23.2.0
-certifi==2024.2.2
-charset-normalizer==3.3.2
-colorama==0.4.6
-curlify==2.2.1
-db-client @ git+https://github.com/AndreiDudin/db_client.git@612608f350f9ee772bef8234a49177d288dfe480
-distconfig3==1.0.1
-dm-api-account @ git+https://github.com/AndreiDudin/dm_api_account.git@6ca6257231c55914156cc627f26c410ff85ec73f
-docopt==0.6.2
-et-xmlfile==1.1.0
-exceptiongroup==1.2.0
-greenlet==3.0.3
-idna==3.6
-inflect==7.0.0
-iniconfig==2.0.0
-jdcal==1.4.1
-openpyxl==2.4.11
-orm-client @ git+https://github.com/AndreiDudin/orm_client.git@913c3ffcac3e291ed290cf377620250585ba9cb6
-packaging==23.2
-pluggy==1.4.0
-psycopg2==2.9.9
-psycopg2-binary==2.9.9
-pydantic==2.6.3
-pydantic_core==2.16.3
-PyHamcrest==2.1.0
-pytest==8.0.2
-PyYAML==6.0.1
-records==0.5.3
+git+https://github.com/AndreiDudin/dm_api_account.git
+git+https://github.com/AndreiDudin/orm_client.git
+git+https://github.com/AndreiDudin/restclient.git
+git+https://github.com/AndreiDudin/db_client.git
 requests==2.31.0
-restclient @ file:///C:/Users/user/PycharmProjects/restclient/dist/restclient-0.0.1.tar.gz
+pytest==8.0.2
+structlog==24.1.0
+allure-pytest==2.13.3
+curlify==2.2.1
+PyHamcrest==2.1.0
 sqlacodegen==2.3.0.post1
 SQLAlchemy==1.4.46
-structlog==24.1.0
-tablib==3.5.0
-toml==0.10.2
-tomli==2.0.1
-typing_extensions==4.10.0
-urllib3==2.2.1
+pydantic==2.6.3
 vyper-config==1.2.1
-watchdog==4.0.0
+records==0.5.3
+psycopg2==2.9.9
+psycopg2-binary==2.9.9

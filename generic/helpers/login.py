@@ -15,18 +15,16 @@ class Login:
             self,
             login: str,
             password: str,
-            remember_me: bool = True,
-            status_code: int = 200,
-            request_token: bool = True
+            remember_me: bool = True
     ):
         response = self.facade.login_api.v1_account_login_post(
+            _return_http_data_only=True,
             login_credentials=LoginCredentials(
                 login=login,
                 password=password,
                 remember_me=remember_me
             )
         )
-        print(response)
         return response
 
     def get_auth_token(
@@ -40,8 +38,6 @@ class Login:
             password=password,
             remember_me=remember_me
         )
-        time.sleep(5)
-        print(response)
  #       token = {'X-Dm-Auth-Token': response.headers['X-Dm-Auth-Token']}
         token = response[2]['X-Dm-Auth-Token']
         return token

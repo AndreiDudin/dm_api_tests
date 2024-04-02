@@ -1,6 +1,7 @@
 import allure
 import pytest
 from hamcrest import assert_that, has_entries
+from generic.assertions.response_checker import check_status_code_http
 from utilities import random_string
 
 
@@ -26,28 +27,17 @@ class TestsPostV1AccountParametrize:
             status_code,
             check
     ):
-        dm_db.delete_user_by_login(login=login)
         login = login
         password = password
         email = email
-        response = dm_api_facade.account.register_new_user(
-            login=login,
-            email=email,
-            password=password,
-            status_code=status_code
-        )
+        dm_db.delete_user_by_login(login=login)
+        with check_status_code_http(expected_status_code=status_code, expected_result=check):
+            dm_api_facade.account.register_new_user(
+                login=login,
+                email=email,
+                password=password
+            )
         if status_code == 201:
             dm_api_facade.account.activate_registered_user(login=login)
-            dataset = dm_db.get_user_by_login(login=login)
-            for row in dataset:
-                assert_that(
-                    row, has_entries(
-                        {
-                            'Login': login,
-                            'Activated': True
-                        }
-                    )
-                )
-        else:
-            assert response.json()["errors"] == check, \
-                f'Ожидаем Error message = {check}, фактическое значение {response.json()["errors"]} '
+            dm_api_facade.login.login_user(login=login, password=password)
+
